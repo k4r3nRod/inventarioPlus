@@ -19,4 +19,10 @@ public class HomeController {
     public String homeAlternative(Model model) {
         return home(model);
     }
+    
+    @GetMapping("/test")
+    @org.springframework.web.bind.annotation.ResponseBody
+    public String test() {
+        return "¡Controller funcionando! Los mappings están bien.";
+    }
 }

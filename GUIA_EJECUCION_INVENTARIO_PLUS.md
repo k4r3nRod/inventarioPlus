@@ -161,6 +161,12 @@ CREATE DATABASE InventarioPlus;
 - ✅ Revisar los logs en la consola
 - ✅ Verificar conexión a MySQL
 - ✅ Verificar que `index-content.jsp` exista
+- ✅ Verificar que `index.jsp` tenga los imports JSP correctos:
+  ```jsp
+  <%@ page contentType="text/html;charset=UTF-8" %>
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+  ```
+- ✅ No usar `response.sendRedirect()` en JSP con Spring Boot
 
 ---
 

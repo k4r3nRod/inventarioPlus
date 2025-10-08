@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     // Configurar parámetros para el layout
-    request.setAttribute("pageTitle", "InventarioPlus - Sistema de Inventario");
-    request.setAttribute("breadcrumb", "Inicio");
+    request.setAttribute("pageTitle", "Página de Prueba - Sistema Demo");
+    request.setAttribute("breadcrumb", "Prueba");
 %>
 
 <jsp:include page="layout.jsp">
