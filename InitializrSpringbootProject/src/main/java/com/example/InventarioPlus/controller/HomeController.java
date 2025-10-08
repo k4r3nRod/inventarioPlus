@@ -12,7 +12,7 @@ public class HomeController {
         model.addAttribute("title", "InventarioPlus");
         model.addAttribute("message", "¡Bienvenido al Sistema de Inventario!");
         model.addAttribute("description", "Gestiona tu inventario de manera eficiente");
-        return "index";
+        return "index";  // Esto buscará /WEB-INF/views/layout/index.jsp
     }
     
     @GetMapping("/home")
