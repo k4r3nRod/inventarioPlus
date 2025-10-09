@@ -94,14 +94,23 @@
             </li>
         </ul>
         
-        <!-- Información del sistema -->
+        <!-- Información del usuario -->
         <div class="user-info">
             <div class="d-flex align-items-center mb-2">
-                <i class="fas fa-tools fs-4 me-2 text-warning"></i>
+                <i class="fas fa-user-circle fs-4 me-2 text-info"></i>
                 <div>
-                    <div class="text-white fw-bold">Sistema Demo</div>
-                    <small class="text-light">Versión de Prueba</small>
+                    <div class="text-white fw-bold">
+                        ${sessionScope.nombreCompleto != null ? sessionScope.nombreCompleto : 'Usuario'}
+                    </div>
+                    <small class="text-light">
+                        <i class="fas fa-user-tag"></i> ${sessionScope.rol != null ? sessionScope.rol : 'INVITADO'}
+                    </small>
                 </div>
+            </div>
+            <div class="mt-2">
+                <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-light btn-sm w-100">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
             </div>
         </div>
     </div>
