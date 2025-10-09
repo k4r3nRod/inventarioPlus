@@ -281,7 +281,7 @@ function initializeNotifications() {
  */
 function updateNotificationBadge() {
     // Esta función se llamaría desde el servidor o mediante AJAX
-    // Por ahora es solo una demostración
+    // Implementación futura para notificaciones dinámicas
     const badge = document.querySelector('.navbar-nav .badge');
     if (badge) {
         // Simular actualización de notificaciones
