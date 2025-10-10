@@ -24,7 +24,10 @@ CREATE TABLE Usuarios (
     apellido VARCHAR(100) NOT NULL,
     correo_electronico VARCHAR(150) UNIQUE NOT NULL,
     telefono VARCHAR(20),
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
     rol_id INT,
+    activo BOOLEAN DEFAULT TRUE,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (rol_id) REFERENCES Roles(id_rol)
@@ -107,3 +110,22 @@ CREATE TABLE Inspecciones (
     FOREIGN KEY (especialista_id) REFERENCES Usuarios(id_usuario),
     FOREIGN KEY (creado_por) REFERENCES Usuarios(id_usuario)
 );
+
+-- =========================================
+-- DATOS DE EJEMPLO
+-- =========================================
+
+-- Insertar roles de ejemplo
+INSERT INTO Roles (nombre_rol, descripcion) VALUES 
+('ADMINISTRADOR', 'Administrador del sistema con acceso completo'),
+('ESPECIALISTA', 'Especialista técnico para inspecciones y mantenimiento'),
+('USUARIO', 'Usuario regular con acceso limitado'),
+('CLIENTE', 'Cliente externo que solicita préstamos de equipos');
+
+-- Insertar usuarios de ejemplo (con nuevos campos)
+INSERT INTO Usuarios (nombre, apellido, correo_electronico, telefono, username, password, rol_id, activo) VALUES 
+('Admin', 'Sistema', 'admin@inventarioplus.com', '555-0001', 'admin', 'admin123', 1, TRUE),
+('Carlos', 'Técnico', 'carlos.tecnico@empresa.com', '555-0002', 'ctecnico', 'spec123', 2, TRUE),
+('Juan', 'Pérez', 'juan.perez@empresa.com', '555-0003', 'jperez', 'user123', 3, TRUE),
+('María', 'González', 'maria.gonzalez@empresa.com', '555-0004', 'mgonzalez', 'user123', 3, TRUE),
+('Luis', 'Cliente', 'luis.cliente@externo.com', '555-0005', 'lcliente', 'client123', 4, TRUE);
