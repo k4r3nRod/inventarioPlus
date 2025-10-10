@@ -122,10 +122,16 @@ INSERT INTO Roles (nombre_rol, descripcion) VALUES
 ('USUARIO', 'Usuario regular con acceso limitado'),
 ('CLIENTE', 'Cliente externo que solicita préstamos de equipos');
 
--- Insertar usuarios de ejemplo (con nuevos campos)
+-- Insertar usuarios de ejemplo (con contraseñas encriptadas en BCrypt)
+-- CONTRASEÑAS ORIGINALES (para testing):
+-- admin: admin123
+-- ctecnico: spec123  
+-- jperez: user123
+-- mgonzalez: user123
+-- lcliente: client123
 INSERT INTO Usuarios (nombre, apellido, correo_electronico, telefono, username, password, rol_id, activo) VALUES 
-('Admin', 'Sistema', 'admin@inventarioplus.com', '555-0001', 'admin', 'admin123', 1, TRUE),
-('Carlos', 'Técnico', 'carlos.tecnico@empresa.com', '555-0002', 'ctecnico', 'spec123', 2, TRUE),
-('Juan', 'Pérez', 'juan.perez@empresa.com', '555-0003', 'jperez', 'user123', 3, TRUE),
-('María', 'González', 'maria.gonzalez@empresa.com', '555-0004', 'mgonzalez', 'user123', 3, TRUE),
-('Luis', 'Cliente', 'luis.cliente@externo.com', '555-0005', 'lcliente', 'client123', 4, TRUE);
+('Admin', 'Sistema', 'admin@inventarioplus.com', '555-0001', 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye/IlPJq.L3pnllRCf//CO1SfM.mjuQea', 1, TRUE),
+('Carlos', 'Técnico', 'carlos.tecnico@empresa.com', '555-0002', 'ctecnico', '$2a$10$5pZBpnYLWlrdCDbmBs0./.GdVpGNGQj1SgP4Y9YP8VgaH1xmfLb2W', 2, TRUE),
+('Juan', 'Pérez', 'juan.perez@empresa.com', '555-0003', 'jperez', '$2a$10$7RwQ/bhLRTWZWEp1dFJ7MuIQKpShyqQ/ILp4C9G3fJXj1XJRoQEa6', 3, TRUE),
+('María', 'González', 'maria.gonzalez@empresa.com', '555-0004', 'mgonzalez', '$2a$10$7RwQ/bhLRTWZWEp1dFJ7MuIQKpShyqQ/ILp4C9G3fJXj1XJRoQEa6', 3, TRUE),
+('Luis', 'Cliente', 'luis.cliente@externo.com', '555-0005', 'lcliente', '$2a$10$K3L9.IhPqYSLBhKZv2F6iOuQ7QhXqDxJ/Hs5mH8J9wV2pF1cR0sT6', 4, TRUE);
