@@ -150,7 +150,7 @@ public class UsuarioController {
             usuarioExistente.setApellido(request.getApellido());
             usuarioExistente.setCorreo(request.getCorreo());
             usuarioExistente.setTelefono(request.getTelefono());
-            usuarioExistente.setRol(request.getRol().toUpperCase());
+            usuarioExistente.setRol(convertirRolStringAId(request.getRol()));
             
             // Si se proporciona nueva contraseña
             if (request.getPassword() != null && !request.getPassword().isEmpty()) {
@@ -194,6 +194,31 @@ public class UsuarioController {
             response.put("success", false);
             response.put("message", "Usuario no encontrado");
             return ResponseEntity.status(404).body(response);
+        }
+    }
+    
+    // ==========================================
+    // MÉTODOS AUXILIARES
+    // ==========================================
+    
+    /**
+     * Convertir rol de String a Integer
+     */
+    private Integer convertirRolStringAId(String rol) {
+        if (rol == null) return 3; // Default: USUARIO
+        switch (rol.toUpperCase()) {
+            case "ADMIN":
+            case "ADMINISTRADOR":
+                return 1;
+            case "ESPECIALISTA":
+            case "TECNICO":
+                return 2;
+            case "USUARIO":
+                return 3;
+            case "CLIENTE":
+                return 4;
+            default:
+                return 3; // Default: USUARIO
         }
     }
     

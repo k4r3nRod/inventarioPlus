@@ -25,10 +25,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByActivo(Boolean activo);
     
     // Buscar usuarios por rol
-    List<Usuario> findByRol(String rol);
+    List<Usuario> findByRol(Integer rol);
     
     // Buscar usuarios activos por rol
-    List<Usuario> findByActivoAndRol(Boolean activo, String rol);
+    List<Usuario> findByActivoAndRol(Boolean activo, Integer rol);
     
     // Verificar si existe username
     boolean existsByUsername(String username);
@@ -44,5 +44,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     // Contar usuarios por rol
     @Query("SELECT COUNT(u) FROM Usuario u WHERE u.activo = true AND u.rol = :rol")
-    Long contarUsuariosPorRol(@Param("rol") String rol);
+    Long contarUsuariosPorRol(@Param("rol") Integer rol);
 }

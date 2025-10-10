@@ -18,27 +18,30 @@ public class UsuarioService {
     
     @PostConstruct
     public void initializeUsers() {
-        // Crear usuarios de prueba si no existen en la base de datos
+        // Crear usuarios de prueba si no existen en la base de datos (comentado porque ya están en la BD)
+        /*
         if (!usuarioRepository.existsByUsername("admin")) {
             Usuario admin = new Usuario("Administrador", "del Sistema", "admin@inventarioplus.com", 
-                                      "admin", PasswordEncoder.encode("admin123"), "ADMIN");
+                                      "admin", PasswordEncoder.encode("admin123"), 1); // 1 = ADMINISTRADOR
             usuarioRepository.save(admin);
             System.out.println("✅ Usuario admin creado en la base de datos");
         }
         
         if (!usuarioRepository.existsByUsername("usuario")) {
             Usuario usuario = new Usuario("Usuario", "Empleado", "usuario@inventarioplus.com", 
-                                        "usuario", PasswordEncoder.encode("user123"), "USUARIO");
+                                        "usuario", PasswordEncoder.encode("user123"), 3); // 3 = USUARIO
             usuarioRepository.save(usuario);
             System.out.println("✅ Usuario empleado creado en la base de datos");
         }
         
         if (!usuarioRepository.existsByUsername("karen")) {
             Usuario karen = new Usuario("Karen", "Rodriguez", "karen@inventarioplus.com", 
-                                      "karen", PasswordEncoder.encode("karen123"), "USUARIO");
+                                      "karen", PasswordEncoder.encode("karen123"), 3); // 3 = USUARIO
             usuarioRepository.save(karen);
             System.out.println("✅ Usuario Karen creado en la base de datos");
         }
+        */
+        System.out.println("✅ Los usuarios ya están configurados en la base de datos");
     }
     
     // ==========================================
@@ -105,11 +108,33 @@ public class UsuarioService {
                                 String username, String password, String rol) {
         if (!usuarioRepository.existsByUsername(username) && 
             !usuarioRepository.existsByCorreo(correo)) {
-            Usuario usuario = new Usuario(nombre, apellido, correo, username, PasswordEncoder.encode(password), rol);
+            Integer rolId = convertirRolStringAId(rol);
+            Usuario usuario = new Usuario(nombre, apellido, correo, username, PasswordEncoder.encode(password), rolId);
             usuarioRepository.save(usuario);
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Convertir rol de String a Integer
+     */
+    private Integer convertirRolStringAId(String rol) {
+        if (rol == null) return 3; // Default: USUARIO
+        switch (rol.toUpperCase()) {
+            case "ADMIN":
+            case "ADMINISTRADOR":
+                return 1;
+            case "ESPECIALISTA":
+            case "TECNICO":
+                return 2;
+            case "USUARIO":
+                return 3;
+            case "CLIENTE":
+                return 4;
+            default:
+                return 3; // Default: USUARIO
+        }
     }
     
     /**
@@ -144,14 +169,16 @@ public class UsuarioService {
      * Buscar usuarios por rol
      */
     public List<Usuario> obtenerUsuariosPorRol(String rol) {
-        return usuarioRepository.findByActivoAndRol(true, rol);
+        Integer rolId = convertirRolStringAId(rol);
+        return usuarioRepository.findByActivoAndRol(true, rolId);
     }
     
     /**
      * Contar usuarios por rol
      */
     public Long contarUsuariosPorRol(String rol) {
-        return usuarioRepository.contarUsuariosPorRol(rol);
+        Integer rolId = convertirRolStringAId(rol);
+        return usuarioRepository.contarUsuariosPorRol(rolId);
     }
     
     /**

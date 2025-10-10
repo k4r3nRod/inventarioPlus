@@ -9,17 +9,28 @@ public class Usuario {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
     private Long id;
     
     private String nombre;
     private String apellido;
+    
+    @Column(name = "correo_electronico")
     private String correo;
+    
     private String telefono;
     private String username;
     private String password;
-    private String rol;
+    
+    @Column(name = "rol_id")
+    private Integer rol;
+    
     private Boolean activo = true;
+    
+    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
+    
+    @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
     
     @PrePersist
@@ -38,7 +49,7 @@ public class Usuario {
     
     // Constructor con parámetros
     public Usuario(String nombre, String apellido, String correo, 
-                   String username, String password, String rol) {
+                   String username, String password, Integer rol) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -105,11 +116,11 @@ public class Usuario {
         this.password = password;
     }
     
-    public String getRol() {
+    public Integer getRol() {
         return rol;
     }
     
-    public void setRol(String rol) {
+    public void setRol(Integer rol) {
         this.rol = rol;
     }
     
@@ -143,11 +154,30 @@ public class Usuario {
     }
     
     public boolean isAdmin() {
-        return "ADMIN".equalsIgnoreCase(rol);
+        return rol != null && rol == 1; // 1 = ADMINISTRADOR
     }
     
     public boolean isUsuario() {
-        return "USUARIO".equalsIgnoreCase(rol);
+        return rol != null && rol == 3; // 3 = USUARIO
+    }
+    
+    public boolean isEspecialista() {
+        return rol != null && rol == 2; // 2 = ESPECIALISTA
+    }
+    
+    public boolean isCliente() {
+        return rol != null && rol == 4; // 4 = CLIENTE
+    }
+    
+    public String getRolNombre() {
+        if (rol == null) return "DESCONOCIDO";
+        switch (rol) {
+            case 1: return "ADMINISTRADOR";
+            case 2: return "ESPECIALISTA";
+            case 3: return "USUARIO";
+            case 4: return "CLIENTE";
+            default: return "DESCONOCIDO";
+        }
     }
     
     @Override
