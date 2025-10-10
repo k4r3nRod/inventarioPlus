@@ -1,6 +1,14 @@
--- Crear la base de datos
-CREATE DATABASE InventarioPlus;
-USE InventarioPlus;
+-- =========================================
+-- ESQUEMA DE BASE DE DATOS: inventario_plus
+-- Compatible con MySQL Workbench
+-- =========================================
+
+-- Crear la base de datos (ejecutar solo si no existe)
+CREATE DATABASE IF NOT EXISTS inventario_plus
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+USE inventario_plus;
 
 -- Tabla Roles
 CREATE TABLE Roles (
