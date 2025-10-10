@@ -1,0 +1,76 @@
+===============================================================================
+                    ENCRIPTACIÓN DE CONTRASEÑAS EN EL PROYECTO
+===============================================================================
+
+¿QUE PERMITE QUE LA CLAVE SE GUARDE ENCRIPTADA?
+
+En tu código, la clave se guarda encriptada gracias a esta línea en el servlet SrvUsuario.java:
+
+```java
+// Encriptar la clave en MD5 antes de guardarla
+String claveEncriptada = Usuario.encriptarMD5(claveOriginal);
+usuario.setClave(claveEncriptada);
+```
+
+LO QUE PERMITE LA ENCRIPTACIÓN:
+------------------------------
+
+1. MÉTODO encriptarMD5() EN LA CLASE Usuario
+   - Este método toma la contraseña en texto plano
+   - La convierte a hash MD5 
+   - Devuelve una cadena encriptada de 32 caracteres hexadecimales
+
+2. FLUJO DE ENCRIPTACIÓN:
+   1. Usuario ingresa: "miPassword123"
+   2. El servlet llama: Usuario.encriptarMD5("miPassword123")
+   3. Se genera hash MD5: "a1b2c3d4e5f6..." (32 caracteres)
+   4. Se guarda en BD: "a1b2c3d4e5f6..."
+
+3. EN LA BASE DE DATOS:
+   - El campo clave VARCHAR(255) almacena el hash MD5
+   - Nunca se guarda la contraseña original
+   - Es irreversible (no se puede "desencriptar")
+
+4. PARA VALIDAR LOGIN:
+   - Se toma la contraseña ingresada
+   - Se encripta con MD5
+   - Se compara el hash generado con el almacenado en BD
+
+EJEMPLO PRÁCTICO:
+----------------
+Contraseña original: "MiClave123"
+Hash MD5 guardado:   "5d41402abc4b2a76b9719d911017c592"
+
+NOTA DE SEGURIDAD:
+-----------------
+MD5 ya no es considerado seguro para contraseñas debido a:
+- Vulnerabilidades conocidas
+- Facilidad para generar colisiones
+- Rapidez para realizar ataques de fuerza bruta
+
+RECOMENDACIONES PARA MAYOR SEGURIDAD:
+------------------------------------
+- Usar bcrypt (recomendado)
+- Usar SHA-256 con salt
+- Usar Argon2
+- Implementar pepper adicional
+- Usar algoritmos diseñados específicamente para contraseñas
+
+VENTAJAS DEL SISTEMA ACTUAL:
+---------------------------
+✓ Las contraseñas no se almacenan en texto plano
+✓ Implementación simple y directa
+✓ Compatible con sistemas legacy
+✓ Funciona correctamente para el proyecto académico
+
+DESVENTAJAS DEL MD5:
+-------------------
+✗ Algoritmo obsoleto para seguridad
+✗ Vulnerable a ataques rainbow table
+✗ No usa salt (mismo hash para misma contraseña)
+✗ Rápido de craquear con hardware moderno
+
+===============================================================================
+Fecha: Octubre 2025
+Proyecto: PR02PC02 - Sistema de Reservas de Hotel
+===============================================================================
