@@ -43,8 +43,8 @@ public class LoginController {
             session.setAttribute("rol", usuario.getRol());
             session.setAttribute("usuarioCompleto", usuario);
             
-            // Redirigir al dashboard
-            return "redirect:/";
+            // Redirigir al dashboard después del login exitoso
+            return "redirect:/dashboard";
         } else {
             // Error de credenciales
             model.addAttribute("error", "Usuario o contraseña incorrectos");
