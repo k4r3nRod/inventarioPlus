@@ -24,9 +24,7 @@ public class LoginController {
             return "redirect:/";
         }
         
-        model.addAttribute("pageTitle", "Iniciar Sesión - InventarioPlus");
-        model.addAttribute("breadcrumb", "Login");
-        return "login";
+        return "login-standalone";
     }
     
     @PostMapping("/login")
@@ -50,9 +48,7 @@ public class LoginController {
         } else {
             // Error de credenciales
             model.addAttribute("error", "Usuario o contraseña incorrectos");
-            model.addAttribute("pageTitle", "Iniciar Sesión - InventarioPlus");
-            model.addAttribute("breadcrumb", "Login");
-            return "login";
+            return "login-standalone";
         }
     }
     
