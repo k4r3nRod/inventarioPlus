@@ -52,10 +52,28 @@ public class UsuarioService {
      * Validar credenciales usando BCrypt
      */
     public boolean validarCredenciales(String username, String password) {
+        System.out.println("=== DEBUG VALIDACIÓN CREDENCIALES ===");
+        System.out.println("Username ingresado: " + username);
+        System.out.println("Password ingresado: " + password);
+        
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            return usuario.getActivo() && PasswordEncoder.matches(password, usuario.getPassword());
+            System.out.println("Usuario encontrado: " + usuario.getUsername());
+            System.out.println("Usuario activo: " + usuario.getActivo());
+            System.out.println("Hash en BD: " + usuario.getPassword());
+            
+            boolean passwordMatch = PasswordEncoder.matches(password, usuario.getPassword());
+            System.out.println("¿Password coincide?: " + passwordMatch);
+            
+            boolean resultado = usuario.getActivo() && passwordMatch;
+            System.out.println("Resultado final: " + resultado);
+            System.out.println("=====================================");
+            
+            return resultado;
+        } else {
+            System.out.println("Usuario NO encontrado en la base de datos");
+            System.out.println("=====================================");
         }
         return false;
     }
