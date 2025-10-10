@@ -99,7 +99,7 @@ public class UsuarioService {
     public boolean agregarUsuario(String nombre, String apellido, String correo, 
                                 String username, String password, String rol) {
         if (!usuarioRepository.existsByUsername(username) && 
-            !usuarioRepository.existsByCorreoElectronico(correo)) {
+            !usuarioRepository.existsByCorreo(correo)) {
             Usuario usuario = new Usuario(nombre, apellido, correo, username, password, rol);
             usuarioRepository.save(usuario);
             return true;
@@ -111,7 +111,7 @@ public class UsuarioService {
      * Actualizar usuario
      */
     public Usuario actualizarUsuario(Usuario usuario) {
-        if (usuario.getIdUsuario() != null && usuarioRepository.existsById(usuario.getIdUsuario())) {
+        if (usuario.getId() != null && usuarioRepository.existsById(usuario.getId())) {
             return usuarioRepository.save(usuario);
         }
         return null;
@@ -160,7 +160,7 @@ public class UsuarioService {
      * Buscar por correo electrónico
      */
     public Usuario obtenerUsuarioPorEmail(String email) {
-        return usuarioRepository.findByCorreoElectronico(email).orElse(null);
+        return usuarioRepository.findByCorreo(email).orElse(null);
     }
     
     /**
@@ -174,7 +174,7 @@ public class UsuarioService {
      * Verificar disponibilidad de email
      */
     public boolean isEmailDisponible(String email) {
-        return !usuarioRepository.existsByCorreoElectronico(email);
+        return !usuarioRepository.existsByCorreo(email);
     }
     
     // ==========================================

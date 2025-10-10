@@ -16,7 +16,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByUsername(String username);
     
     // Buscar usuario por email
-    Optional<Usuario> findByCorreoElectronico(String correoElectronico);
+    Optional<Usuario> findByCorreo(String correo);
     
     // Buscar usuario por username y password (para login)
     Optional<Usuario> findByUsernameAndPassword(String username, String password);
@@ -34,7 +34,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByUsername(String username);
     
     // Verificar si existe email
-    boolean existsByCorreoElectronico(String correoElectronico);
+    boolean existsByCorreo(String correo);
     
     // Búsqueda por nombre o apellido (LIKE)
     @Query("SELECT u FROM Usuario u WHERE u.activo = true AND " +

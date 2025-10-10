@@ -9,37 +9,17 @@ public class Usuario {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    private Long id;
     
-    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
-    
-    @Column(name = "apellido", nullable = false, length = 100)
     private String apellido;
-    
-    @Column(name = "correo_electronico", nullable = false, unique = true, length = 150)
-    private String correoElectronico;
-    
-    @Column(name = "telefono", length = 20)
+    private String correo;
     private String telefono;
-    
-    @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
-    
-    @Column(name = "password", nullable = false, length = 255)
     private String password;
-    
-    @Column(name = "rol", nullable = false, length = 50)
     private String rol;
-    
-    @Column(name = "activo", nullable = false)
     private Boolean activo = true;
-    
-    @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
-    
-    @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
     
     @PrePersist
@@ -53,14 +33,15 @@ public class Usuario {
         fechaActualizacion = LocalDateTime.now();
     }
     
-    // Constructores
+    // Constructor vacío (obligatorio para JPA)
     public Usuario() {}
     
-    public Usuario(String nombre, String apellido, String correoElectronico, 
+    // Constructor con parámetros
+    public Usuario(String nombre, String apellido, String correo, 
                    String username, String password, String rol) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correoElectronico = correoElectronico;
+        this.correo = correo;
         this.username = username;
         this.password = password;
         this.rol = rol;
@@ -68,12 +49,12 @@ public class Usuario {
     }
     
     // Getters y Setters
-    public Long getIdUsuario() {
-        return idUsuario;
+    public Long getId() {
+        return id;
     }
     
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setId(Long id) {
+        this.id = id;
     }
     
     public String getNombre() {
@@ -92,12 +73,12 @@ public class Usuario {
         this.apellido = apellido;
     }
     
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public String getCorreo() {
+        return correo;
     }
     
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
     
     public String getTelefono() {
@@ -172,7 +153,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "idUsuario=" + idUsuario +
+                "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", username='" + username + '\'' +

@@ -1,7 +1,7 @@
 package com.example.InventarioPlus.controller;
 
-import com.example.InventarioPlus.entity.Usuario;
-import com.example.InventarioPlus.service.UserService;
+import com.example.InventarioPlus.model.Usuario;
+import com.example.InventarioPlus.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class DatabaseTestController {
     
     @Autowired
-    private UserService userService;
+    private UsuarioService usuarioService;
     
     @GetMapping("/test")
     public Map<String, Object> testDatabaseConnection() {
@@ -24,11 +24,11 @@ public class DatabaseTestController {
         
         try {
             // Obtener todos los usuarios de la base de datos
-            List<Usuario> usuarios = userService.obtenerTodosLosUsuarios();
+            List<Usuario> usuarios = usuarioService.obtenerTodosLosUsuarios();
             
             // Contar usuarios por rol
-            Long totalAdmins = userService.contarUsuariosPorRol("ADMIN");
-            Long totalUsuarios = userService.contarUsuariosPorRol("USUARIO");
+            Long totalAdmins = usuarioService.contarUsuariosPorRol("ADMIN");
+            Long totalUsuarios = usuarioService.contarUsuariosPorRol("USUARIO");
             
             response.put("status", "SUCCESS");
             response.put("message", "Conexión a base de datos exitosa");
