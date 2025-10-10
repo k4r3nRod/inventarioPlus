@@ -34,8 +34,16 @@ public class LoginController {
             Model model,
             HttpSession session) {
         
+        System.out.println("=== DEBUG LOGIN CONTROLLER ===");
+        System.out.println("Recibido username: '" + username + "'");
+        System.out.println("Recibido password: '" + password + "'");
+        System.out.println("Username length: " + username.length());
+        System.out.println("Password length: " + password.length());
+        
         if (usuarioService.validarCredenciales(username, password)) {
             Usuario usuario = usuarioService.obtenerUsuarioPorUsername(username);
+            
+            System.out.println("✅ LOGIN EXITOSO para usuario: " + usuario.getUsername());
             
             // Crear sesión con información completa del usuario
             session.setAttribute("usuario", usuario.getUsername());
@@ -46,6 +54,7 @@ public class LoginController {
             // Redirigir al dashboard después del login exitoso
             return "redirect:/dashboard";
         } else {
+            System.out.println("❌ LOGIN FALLIDO para username: '" + username + "'");
             // Error de credenciales
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             return "login-standalone";
