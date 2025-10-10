@@ -49,10 +49,10 @@ public class UsuarioService {
     // ==========================================
     
     /**
-     * Validar credenciales usando BCrypt - TEMPORALMENTE DESACTIVADO PARA PRUEBAS
+     * Validar credenciales usando BCrypt
      */
     public boolean validarCredenciales(String username, String password) {
-        System.out.println("=== DEBUG VALIDACIÓN CREDENCIALES (SIN BCRYPT) ===");
+        System.out.println("=== DEBUG VALIDACIÓN CREDENCIALES ===");
         System.out.println("Username ingresado: " + username);
         System.out.println("Password ingresado: " + password);
         
@@ -61,24 +61,19 @@ public class UsuarioService {
             Usuario usuario = usuarioOpt.get();
             System.out.println("Usuario encontrado: " + usuario.getUsername());
             System.out.println("Usuario activo: " + usuario.getActivo());
-            System.out.println("Password en BD: " + usuario.getPassword());
+            System.out.println("Hash en BD: " + usuario.getPassword());
             
-            // TEMPORAL: Comparación directa de strings (SIN BCrypt)
-            boolean passwordMatch = password.equals(usuario.getPassword());
-            System.out.println("¿Password coincide? (comparación directa): " + passwordMatch);
-            
-            // COMENTADO TEMPORALMENTE - Validación BCrypt original:
-            // boolean passwordMatch = PasswordEncoder.matches(password, usuario.getPassword());
-            // System.out.println("¿Password coincide? (BCrypt): " + passwordMatch);
+            boolean passwordMatch = PasswordEncoder.matches(password, usuario.getPassword());
+            System.out.println("¿Password coincide?: " + passwordMatch);
             
             boolean resultado = usuario.getActivo() && passwordMatch;
             System.out.println("Resultado final: " + resultado);
-            System.out.println("=====================================================");
+            System.out.println("=====================================");
             
             return resultado;
         } else {
             System.out.println("Usuario NO encontrado en la base de datos");
-            System.out.println("=====================================================");
+            System.out.println("=====================================");
         }
         return false;
     }
