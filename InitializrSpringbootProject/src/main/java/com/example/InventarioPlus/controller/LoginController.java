@@ -1,7 +1,7 @@
 package com.example.InventarioPlus.controller;
 
-import com.example.InventarioPlus.model.User;
-import com.example.InventarioPlus.service.UserService;
+import com.example.InventarioPlus.model.Usuario;
+import com.example.InventarioPlus.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 public class LoginController {
     
     @Autowired
-    private UserService userService;
+    private UsuarioService usuarioService;
     
     @GetMapping("/login")
     public String showLoginForm(Model model, HttpSession session) {
@@ -34,8 +34,8 @@ public class LoginController {
             Model model,
             HttpSession session) {
         
-        if (userService.validarCredenciales(username, password)) {
-            User usuario = userService.obtenerUsuario(username);
+        if (usuarioService.validarCredenciales(username, password)) {
+            Usuario usuario = usuarioService.obtenerUsuarioPorUsername(username);
             
             // Crear sesión con información completa del usuario
             session.setAttribute("usuario", usuario.getUsername());
