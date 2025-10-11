@@ -95,8 +95,8 @@ CREATE TABLE Devoluciones (
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo),
-    FOREIGN KEY (especialista_asignado_id) REFERENCES Usuarios(id_usuario),
-    FOREIGN KEY (creado_por) REFERENCES Usuarios(id_usuario)
+    FOREIGN KEY (especialista_asignado_id) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (creado_por) REFERENCES usuarios(id_usuario)
 );
 
 -- Tabla Inspecciones
@@ -113,18 +113,92 @@ CREATE TABLE Inspecciones (
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_devolucion) REFERENCES Devoluciones(id_devolucion),
     FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo),
-    FOREIGN KEY (especialista_id) REFERENCES Usuarios(id_usuario),
-    FOREIGN KEY (creado_por) REFERENCES Usuarios(id_usuario)
+    FOREIGN KEY (especialista_id) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (creado_por) REFERENCES usuarios(id_usuario)
 );
 
 -- =========================================
--- DATOS DE EJEMPLO
+-- PASO 5: INSERTAR USUARIOS CON ENCRIPTACIÓN MD5
+-- Según documento ENCRIPTACION_CONTRASEÑAS.txt
 -- =========================================
 
--- Insertar roles de ejemplo
-INSERT INTO Roles (nombre_rol, descripcion) VALUES 
-('ADMINISTRADOR', 'Administrador del sistema con acceso completo'),
-('ESPECIALISTA', 'Especialista técnico para inspecciones y mantenimiento'),
-('USUARIO', 'Usuario regular con acceso limitado'),
-('CLIENTE', 'Cliente externo que solicita préstamos de equipos');
+-- Hashes MD5 generados con Usuario.encriptarMD5():
+-- admin123 -> 0192023a7bbd73250516f069df18b500
+-- user123  -> 6ad14ba9986e3615423dfca256d04e3f
+-- spec123  -> 5f35dc7f50c58d67c94f87d99de5b26e
+-- demo123  -> 62cc2d8b4bf2d8728120d052163a77df
+-- test123  -> cc03e747a6afbbcbf8be7668acfebee5
+-- guest123 -> fcf41657f02f88137a1bcf068a32c0a3
+
+INSERT INTO usuarios (nombre, apellido, correo_electronico, username, password, rol_id, activo) VALUES
+('Administrador', 'del Sistema', 'admin@inventarioplus.com', 'admin', '0192023a7bbd73250516f069df18b500', 1, TRUE),
+('Juan', 'Pérez', 'juan.perez@inventarioplus.com', 'jperez', '6ad14ba9986e3615423dfca256d04e3f', 3, TRUE),
+('Carlos', 'Técnico', 'carlos.tecnico@inventarioplus.com', 'ctecnico', '5f35dc7f50c58d67c94f87d99de5b26e', 2, TRUE),
+('Usuario', 'Demo', 'demo@inventarioplus.com', 'demo', '62cc2d8b4bf2d8728120d052163a77df', 3, TRUE),
+('Usuario', 'Test', 'test@inventarioplus.com', 'test', 'cc03e747a6afbbcbf8be7668acfebee5', 3, TRUE),
+('Usuario', 'Invitado', 'guest@inventarioplus.com', 'guest', 'fcf41657f02f88137a1bcf068a32c0a3', 3, TRUE),
+('Especialista', 'Principal', 'especialista@inventarioplus.com', 'especialista', '6ad14ba9986e3615423dfca256d04e3f', 2, TRUE),
+('Super', 'Admin', 'superadmin@inventarioplus.com', 'superadmin', '0192023a7bbd73250516f069df18b500', 1, TRUE);
+
+-- =========================================
+-- PASO 6: VERIFICACIÓN DE USUARIOS CREADOS
+-- =========================================
+
+-- Ver todos los usuarios con encriptación MD5
+SELECT 
+    '✅ USUARIOS CREADOS CON ENCRIPTACIÓN MD5' as TITULO,
+    '' as SEPARADOR;
+
+SELECT 
+    username,
+    nombre,
+    apellido,
+    password as hash_md5,
+    LENGTH(password) as hash_length,
+    rol_id,
+    CASE rol_id 
+        WHEN 1 THEN 'ADMINISTRADOR'
+        WHEN 2 THEN 'ESPECIALISTA' 
+        WHEN 3 THEN 'USUARIO'
+        WHEN 4 THEN 'CLIENTE'
+    END as rol_nombre,
+    activo
+FROM usuarios
+ORDER BY rol_id, username;
+
+-- Credenciales de acceso
+SELECT 
+    '🔐 CREDENCIALES DE ACCESO' as TITULO,
+    '' as SEPARADOR;
+
+SELECT 
+    username as USUARIO,
+    CASE username
+        WHEN 'admin' THEN 'admin123'
+        WHEN 'jperez' THEN 'user123'
+        WHEN 'ctecnico' THEN 'spec123'
+        WHEN 'demo' THEN 'demo123'
+        WHEN 'test' THEN 'test123'
+        WHEN 'guest' THEN 'guest123'
+        WHEN 'especialista' THEN 'user123'
+        WHEN 'superadmin' THEN 'admin123'
+    END as PASSWORD,
+    CASE rol_id 
+        WHEN 1 THEN '👑 ADMINISTRADOR'
+        WHEN 2 THEN '🔧 ESPECIALISTA' 
+        WHEN 3 THEN '👤 USUARIO'
+        WHEN 4 THEN '👥 CLIENTE'
+    END as ROL
+FROM usuarios
+ORDER BY rol_id, username;
+
+-- Resumen final
+SELECT 
+    '📊 RESUMEN DE CREACIÓN' as TITULO,
+    COUNT(*) as TOTAL_USUARIOS,
+    SUM(CASE WHEN rol_id = 1 THEN 1 ELSE 0 END) as ADMINISTRADORES,
+    SUM(CASE WHEN rol_id = 2 THEN 1 ELSE 0 END) as ESPECIALISTAS,
+    SUM(CASE WHEN rol_id = 3 THEN 1 ELSE 0 END) as USUARIOS,
+    SUM(CASE WHEN LENGTH(password) = 32 THEN 1 ELSE 0 END) as CON_MD5_VALIDO
+FROM usuarios;
 
