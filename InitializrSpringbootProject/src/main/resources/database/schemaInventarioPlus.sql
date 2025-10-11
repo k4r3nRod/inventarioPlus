@@ -1,32 +1,24 @@
 -- =========================================
 -- ESQUEMA DE BASE DE DATOS: inventario_plus
 -- Compatible con MySQL Workbench
+-- ENCRIPTACIÓN MD5 según ENCRIPTACION_CONTRASEÑAS.txt
 -- =========================================
 
--- Crear la base de datos (ejecutar solo si no existe)
-CREATE DATABASE IF NOT EXISTS inventario_plus
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-
+-- Eliminar base de datos existente y recrear desde cero
+DROP DATABASE IF EXISTS inventario_plus;
+CREATE DATABASE inventario_plus CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE inventario_plus;
 
--- Tabla Roles
-CREATE TABLE Roles (
-    id_rol INT PRIMARY KEY AUTO_INCREMENT,
-    nombre_rol VARCHAR(100) NOT NULL,
-    descripcion TEXT
-);
-
--- Tabla Usuarios
-CREATE TABLE Usuarios (
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+-- Tabla Usuarios (SIMPLIFICADA - sin tabla roles separada)
+CREATE TABLE usuarios (
+    id_usuario BIGINT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
     correo_electronico VARCHAR(150) UNIQUE NOT NULL,
     telefono VARCHAR(20),
-    username VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    rol_id INT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,  -- Para hash MD5 (32 caracteres)
+    rol_id INT NOT NULL DEFAULT 3,   -- 1=ADMIN, 2=ESPECIALISTA, 3=USUARIO
     activo BOOLEAN DEFAULT TRUE,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -122,16 +114,3 @@ INSERT INTO Roles (nombre_rol, descripcion) VALUES
 ('USUARIO', 'Usuario regular con acceso limitado'),
 ('CLIENTE', 'Cliente externo que solicita préstamos de equipos');
 
--- Insertar usuarios de ejemplo (con contraseñas encriptadas en BCrypt)
--- CONTRASEÑAS ORIGINALES (para testing):
--- admin: admin123
--- ctecnico: spec123  
--- jperez: user123
--- mgonzalez: user123
--- lcliente: client123
-INSERT INTO Usuarios (nombre, apellido, correo_electronico, telefono, username, password, rol_id, activo) VALUES 
-('Admin', 'Sistema', 'admin@inventarioplus.com', '555-0001', 'admin', '$2a$10$N9qo8uLOickgx2ZMRZoMye/IlPJq.L3pnllRCf//CO1SfM.mjuQea', 1, TRUE),
-('Carlos', 'Técnico', 'carlos.tecnico@empresa.com', '555-0002', 'ctecnico', '$2a$10$5pZBpnYLWlrdCDbmBs0./.GdVpGNGQj1SgP4Y9YP8VgaH1xmfLb2W', 2, TRUE),
-('Juan', 'Pérez', 'juan.perez@empresa.com', '555-0003', 'jperez', '$2a$10$7RwQ/bhLRTWZWEp1dFJ7MuIQKpShyqQ/ILp4C9G3fJXj1XJRoQEa6', 3, TRUE),
-('María', 'González', 'maria.gonzalez@empresa.com', '555-0004', 'mgonzalez', '$2a$10$7RwQ/bhLRTWZWEp1dFJ7MuIQKpShyqQ/ILp4C9G3fJXj1XJRoQEa6', 3, TRUE),
-('Luis', 'Cliente', 'luis.cliente@externo.com', '555-0005', 'lcliente', '$2a$10$K3L9.IhPqYSLBhKZv2F6iOuQ7QhXqDxJ/Hs5mH8J9wV2pF1cR0sT6', 4, TRUE);
