@@ -4,12 +4,26 @@
 -- ENCRIPTACIÓN MD5 según ENCRIPTACION_CONTRASEÑAS.txt
 -- =========================================
 
--- Eliminar base de datos existente y recrear desde cero
+-- PASO 1: Eliminar base de datos existente y recrear desde cero
 DROP DATABASE IF EXISTS inventario_plus;
 CREATE DATABASE inventario_plus CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE inventario_plus;
 
--- Tabla Usuarios (SIMPLIFICADA - sin tabla roles separada)
+-- PASO 2: Crear tabla Roles PRIMERO (para las foreign keys)
+CREATE TABLE Roles (
+    id_rol INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_rol VARCHAR(100) NOT NULL,
+    descripcion TEXT
+);
+
+-- PASO 3: Insertar roles básicos
+INSERT INTO Roles (nombre_rol, descripcion) VALUES 
+('ADMINISTRADOR', 'Administrador del sistema con acceso completo'),
+('ESPECIALISTA', 'Especialista técnico para inspecciones y mantenimiento'),
+('USUARIO', 'Usuario regular con acceso limitado'),
+('CLIENTE', 'Cliente externo que solicita préstamos de equipos');
+
+-- PASO 4: Crear tabla Usuarios con encriptación MD5
 CREATE TABLE usuarios (
     id_usuario BIGINT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
@@ -59,9 +73,9 @@ CREATE TABLE Prestamos (
     observaciones_inspeccion TEXT,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_equipo) REFERENCES Equipos(id_equipo),
-    FOREIGN KEY (especialista_asignado_id) REFERENCES Usuarios(id_usuario)
+    FOREIGN KEY (especialista_asignado_id) REFERENCES usuarios(id_usuario)
 );
 
 -- Tabla Devoluciones
