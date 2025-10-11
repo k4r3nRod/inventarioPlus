@@ -49,10 +49,10 @@ public class UsuarioService {
     // ==========================================
     
     /**
-     * Validar credenciales usando BCrypt
+     * Validar credenciales usando MD5 (según documento ENCRIPTACION_CONTRASEÑAS.txt)
      */
     public boolean validarCredenciales(String username, String password) {
-        System.out.println("=== DEBUG VALIDACIÓN CREDENCIALES ===");
+        System.out.println("=== DEBUG VALIDACIÓN CREDENCIALES MD5 ===");
         System.out.println("Username ingresado: " + username);
         System.out.println("Password ingresado: " + password);
         
@@ -61,19 +61,23 @@ public class UsuarioService {
             Usuario usuario = usuarioOpt.get();
             System.out.println("Usuario encontrado: " + usuario.getUsername());
             System.out.println("Usuario activo: " + usuario.getActivo());
-            System.out.println("Hash en BD: " + usuario.getPassword());
+            System.out.println("Hash MD5 en BD: " + usuario.getPassword());
             
-            boolean passwordMatch = PasswordEncoder.matches(password, usuario.getPassword());
-            System.out.println("¿Password coincide?: " + passwordMatch);
+            // Encriptar la contraseña ingresada con MD5 para compararla
+            String passwordMD5 = Usuario.encriptarMD5(password);
+            System.out.println("Password ingresado encriptado MD5: " + passwordMD5);
+            
+            boolean passwordMatch = passwordMD5.equals(usuario.getPassword());
+            System.out.println("¿Password MD5 coincide?: " + passwordMatch);
             
             boolean resultado = usuario.getActivo() && passwordMatch;
             System.out.println("Resultado final: " + resultado);
-            System.out.println("=====================================");
+            System.out.println("========================================");
             
             return resultado;
         } else {
             System.out.println("Usuario NO encontrado en la base de datos");
-            System.out.println("=====================================");
+            System.out.println("========================================");
         }
         return false;
     }
@@ -120,14 +124,16 @@ public class UsuarioService {
     }
     
     /**
-     * Agregar nuevo usuario (encripta la contraseña automáticamente)
+     * Agregar nuevo usuario (encripta la contraseña con MD5 automáticamente)
      */
     public boolean agregarUsuario(String nombre, String apellido, String correo, 
                                 String username, String password, String rol) {
         if (!usuarioRepository.existsByUsername(username) && 
             !usuarioRepository.existsByCorreo(correo)) {
             Integer rolId = convertirRolStringAId(rol);
-            Usuario usuario = new Usuario(nombre, apellido, correo, username, PasswordEncoder.encode(password), rolId);
+            // Encriptar contraseña con MD5 según documento
+            String claveEncriptada = Usuario.encriptarMD5(password);
+            Usuario usuario = new Usuario(nombre, apellido, correo, username, claveEncriptada, rolId);
             usuarioRepository.save(usuario);
             return true;
         }

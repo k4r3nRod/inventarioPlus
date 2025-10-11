@@ -2,6 +2,8 @@ package com.example.InventarioPlus.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Entity
 @Table(name = "usuarios")
@@ -190,5 +192,41 @@ public class Usuario {
                 ", rol='" + rol + '\'' +
                 ", activo=" + activo +
                 '}';
+    }
+    
+    // ==========================================
+    // MÉTODO DE ENCRIPTACIÓN MD5
+    // ==========================================
+    
+    /**
+     * Encriptar una contraseña usando MD5
+     * Tal como especifica el documento ENCRIPTACION_CONTRASEÑAS.txt
+     * 
+     * @param claveOriginal La contraseña en texto plano
+     * @return Hash MD5 de 32 caracteres hexadecimales
+     */
+    public static String encriptarMD5(String claveOriginal) {
+        try {
+            // Crear instancia de MessageDigest para MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            
+            // Convertir la clave original a bytes y calcular el hash
+            byte[] digest = md.digest(claveOriginal.getBytes());
+            
+            // Convertir bytes a hexadecimal
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : digest) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            
+            return hexString.toString();
+            
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error al encriptar con MD5: " + e.getMessage());
+        }
     }
 }
