@@ -11,7 +11,7 @@ USE inventario_plus;
 
 -- PASO 2: Crear tabla Roles PRIMERO (para las foreign keys)
 CREATE TABLE Roles (
-    id_rol INT PRIMARY KEY AUTO_INCREMENT,
+    id_rol BIGINT PRIMARY KEY AUTO_INCREMENT,
     nombre_rol VARCHAR(100) NOT NULL,
     descripcion TEXT
 );
@@ -32,7 +32,7 @@ CREATE TABLE usuarios (
     telefono VARCHAR(20),
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,  -- Para hash MD5 (32 caracteres)
-    rol_id INT NOT NULL DEFAULT 3,   -- 1=ADMIN, 2=ESPECIALISTA, 3=USUARIO
+    rol_id BIGINT NOT NULL DEFAULT 3,   -- 1=ADMIN, 2=ESPECIALISTA, 3=USUARIO
     activo BOOLEAN DEFAULT TRUE,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -41,7 +41,7 @@ CREATE TABLE usuarios (
 
 -- Tabla Equipos
 CREATE TABLE Equipos (
-    id_equipo INT PRIMARY KEY AUTO_INCREMENT,
+    id_equipo BIGINT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100) NOT NULL,
     tipo VARCHAR(100),
     modelo VARCHAR(100),
@@ -55,19 +55,19 @@ CREATE TABLE Equipos (
 
 -- Tabla Prestamos
 CREATE TABLE Prestamos (
-    id_prestamo INT PRIMARY KEY AUTO_INCREMENT,
+    id_prestamo BIGINT PRIMARY KEY AUTO_INCREMENT,
     fecha_prestamo DATETIME NOT NULL,
     fecha_devolucion_estimada DATETIME,
     fecha_devolucion_real DATETIME,
-    id_usuario INT,
-    id_equipo INT,
+    id_usuario BIGINT,
+    id_equipo BIGINT,
     estado_prestamo VARCHAR(50),
     condicion_al_prestar TEXT,
     condicion_al_devolver TEXT,
     observaciones TEXT,
     inspeccion_requerida VARCHAR(10),
     inspeccion_realizada VARCHAR(10),
-    especialista_asignado_id INT,
+    especialista_asignado_id BIGINT,
     fecha_inspeccion_programada DATETIME,
     estado_inspeccion VARCHAR(50),
     observaciones_inspeccion TEXT,
@@ -80,18 +80,18 @@ CREATE TABLE Prestamos (
 
 -- Tabla Devoluciones
 CREATE TABLE Devoluciones (
-    id_devolucion INT PRIMARY KEY AUTO_INCREMENT,
-    id_prestamo INT,
+    id_devolucion BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id_prestamo BIGINT,
     fecha_registro_devolucion DATETIME,
     fecha_devolucion_real DATETIME,
     condicion_al_devolver TEXT,
     observaciones TEXT,
     solicitar_inspeccion VARCHAR(10),
-    especialista_asignado_id INT,
+    especialista_asignado_id BIGINT,
     fecha_inspeccion_programada DATETIME,
     inspeccion_realizada VARCHAR(10),
     estado_inspeccion VARCHAR(50),
-    creado_por INT,
+    creado_por BIGINT,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_prestamo) REFERENCES Prestamos(id_prestamo),
@@ -101,14 +101,14 @@ CREATE TABLE Devoluciones (
 
 -- Tabla Inspecciones
 CREATE TABLE Inspecciones (
-    id_inspeccion INT PRIMARY KEY AUTO_INCREMENT,
-    id_devolucion INT,
-    id_prestamo INT,
-    especialista_id INT,
+    id_inspeccion BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id_devolucion BIGINT,
+    id_prestamo BIGINT,
+    especialista_id BIGINT,
     fecha_inspeccion DATETIME,
     resultado TEXT,
     observaciones TEXT,
-    creado_por INT,
+    creado_por BIGINT,
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_devolucion) REFERENCES Devoluciones(id_devolucion),
