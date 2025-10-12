@@ -2,7 +2,6 @@ package com.example.InventarioPlus.service;
 
 import com.example.InventarioPlus.model.Usuario;
 import com.example.InventarioPlus.repository.UsuarioRepository;
-import com.example.InventarioPlus.util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
