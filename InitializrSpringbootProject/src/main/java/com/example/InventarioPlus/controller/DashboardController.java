@@ -23,7 +23,7 @@ public class DashboardController {
         model.addAttribute("usuarioCompleto", session.getAttribute("usuarioCompleto"));
         
         // Retornar la vista del dashboard
-        return "layout/dashboard-content";
+        return "dashboard-content";
     }
     
     @GetMapping("/")

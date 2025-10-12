@@ -1,5 +1,39 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - InventarioPlus</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/estilosLayout.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header/Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-boxes"></i> InventarioPlus
+                </a>
+                <div class="navbar-nav ms-auto">
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user"></i> ${nombreCompleto}
+                    </span>
+                    <a class="nav-link" href="/logout">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+        </nav>
 
 <!-- Dashboard Principal -->
 <div class="row">
@@ -18,8 +52,14 @@
                 </p>
                 <p class="text-muted mb-0">
                     <i class="fas fa-user-tag"></i> Rol: 
-                    <span class="badge ${rol == 'ADMIN' ? 'bg-danger' : 'bg-success'}">
-                        ${rol}
+                    <span class="badge ${rol == 1 ? 'bg-danger' : 'bg-success'}">
+                        <c:choose>
+                            <c:when test="${rol == 1}">ADMINISTRADOR</c:when>
+                            <c:when test="${rol == 2}">ESPECIALISTA</c:when>
+                            <c:when test="${rol == 3}">USUARIO</c:when>
+                            <c:when test="${rol == 4}">CLIENTE</c:when>
+                            <c:otherwise>DESCONOCIDO</c:otherwise>
+                        </c:choose>
                     </span>
                 </p>
                 <div class="mt-3">
@@ -135,7 +175,7 @@
 </div>
 
 <!-- Actividad Reciente (solo para admin) -->
-<c:if test="${rol == 'ADMIN'}">
+<c:if test="${rol == 1}">
 <div class="row mt-4">
     <div class="col-12">
         <div class="card">
@@ -158,3 +198,16 @@
     </div>
 </div>
 </c:if>
+
+    </div> <!-- Cierre del container-fluid -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="${pageContext.request.contextPath}/assets/js/layout.js"></script>
+    
+    <!-- jQuery (opcional para funcionalidades adicionales) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>
