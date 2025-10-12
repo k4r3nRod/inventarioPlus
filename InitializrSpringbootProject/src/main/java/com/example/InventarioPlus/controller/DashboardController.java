@@ -22,8 +22,12 @@ public class DashboardController {
         model.addAttribute("rol", session.getAttribute("rol"));
         model.addAttribute("usuarioCompleto", session.getAttribute("usuarioCompleto"));
         
-        // Retornar la vista del dashboard
-        return "dashboard-content";
+        // Configurar metadatos para la plantilla
+        model.addAttribute("pageTitle", "Dashboard - InventarioPlus");
+        model.addAttribute("breadcrumb", "Panel Principal");
+        
+        // Retornar la vista del layout
+        return "layout";
     }
     
     @GetMapping("/")
