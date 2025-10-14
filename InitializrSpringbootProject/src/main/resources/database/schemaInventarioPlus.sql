@@ -202,4 +202,3 @@ SELECT
     SUM(CASE WHEN LENGTH(password) = 32 THEN 1 ELSE 0 END) as CON_MD5_VALIDO
 FROM usuarios;
 
-dsadasd
